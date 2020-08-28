@@ -38,7 +38,7 @@ class InstallCommand extends Command
     }
 
     /**
-     * Register the Canvas service provider in the application configuration file.
+     * Register the CardFlash service provider in the application configuration file.
      *
      * @return void
      */

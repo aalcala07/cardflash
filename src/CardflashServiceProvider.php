@@ -32,6 +32,10 @@ class CardflashServiceProvider extends ServiceProvider
             __DIR__.'/../config/cardflash.php',
             'cardflash'
         );
+
+        $this->commands([
+            InstallCommand::class,
+        ]);
     }
 
     /**
@@ -54,11 +58,11 @@ class CardflashServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../public' => public_path('vendor/cardflash'),
-            ], 'canvas-assets');
+            ], 'cardflash-assets');
 
             $this->publishes([
                 __DIR__.'/../config/cardflash.php' => config_path('cardflash.php'),
-            ], 'canvas-config');
+            ], 'cardflash-config');
         }
     }
 
