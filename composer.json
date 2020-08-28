@@ -1,6 +1,5 @@
 {
     "name": "aalcala/cardflash",
-    "type": "project",
     "description": "A Laravel flashcard app.",
     "keywords": [
         "cardflash",
