@@ -2,6 +2,7 @@
 
 namespace Cardflash;
 
+use Cardflash\Console\InstallCommand;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
 
