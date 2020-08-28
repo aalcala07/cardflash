@@ -18,6 +18,7 @@ class CardflashServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerRoutes();
+        $this->registerMigrations();
         $this->registerPublishing();
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'cardflash');
     }
@@ -33,6 +34,7 @@ class CardflashServiceProvider extends ServiceProvider
             __DIR__.'/../config/cardflash.php',
             'cardflash'
         );
+
 
         $this->commands([
             InstallCommand::class,
@@ -64,6 +66,13 @@ class CardflashServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../config/cardflash.php' => config_path('cardflash.php'),
             ], 'cardflash-config');
+        }
+    }
+
+    private function registerMigrations()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
     }
 
