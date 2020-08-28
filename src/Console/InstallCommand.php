@@ -31,6 +31,7 @@ class InstallCommand extends Command
         // $this->callSilent('vendor:publish', ['--tag' => 'cardflash-provider']);
         $this->callSilent('vendor:publish', ['--tag' => 'cardflash-assets']);
         $this->callSilent('vendor:publish', ['--tag' => 'cardflash-config']);
+        $this->callSilent('migrate');
 
         // $this->registerCardflashServiceProvider();
 
