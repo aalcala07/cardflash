@@ -11,6 +11,7 @@ class DeckController extends Controller
 {
     public function index()
     {
+        dd('decks 123');
         $decks = Deck::all();
         return view('cardflash::decks.index', compact('decks'));
     }
