@@ -11,7 +11,6 @@ class DeckController extends Controller
 {
     public function index()
     {
-        dd('decks 123');
         $decks = Deck::all();
         return view('cardflash::decks.index', compact('decks'));
     }
@@ -44,6 +43,36 @@ class DeckController extends Controller
         } else {
             return redirect(route('cardflash.decks.create'))->with('error_message', 'Error! Unable to create deck.');
         }
+    }
+
+    public function edit(Request $request, Deck $deck)
+    {
+        return view('cardflash::decks.edit', compact('deck'));
+    }
+
+    public function update(Request $request, Deck $deck)
+    {
+        $deck->name = $request->input('name');
+        if ($deck->save()) {
+            return redirect(route('cardflash.decks.index'))->with('success_message', 'Success! Deck updated.');
+        } else {
+            return redirect(route('cardflash.decks.edit', $deck->id))->with('error_message', 'Error! Unable to update deck.');
+        }
+    }
+
+    public function deleteCheck(Request $request, Deck $deck)
+    {
+        return view('cardflash::decks.delete', compact('deck'));
+    }
+
+    public function destroy(Request $request, Deck $deck)
+    {
+        if ($deck->delete()) {
+            return redirect(route('cardflash.decks.index'))->with('success_message', 'Success! Deck deleted.');
+        } else {
+            return redirect(route('cardflash.decks.delete', $deck->id))->with('error_message', 'Error! Unable to delete deck.');
+        }
+
     }
 
     public function import(Request $request)

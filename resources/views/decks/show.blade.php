@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12 col-xl-8">
 
             @if (session('success_message'))
             <div class="alert alert-success">{{ session('success_message') }}</div>
@@ -20,32 +20,31 @@
                     @if (!$deck->cards->count())
                         There are no cards in this deck.
                     @else
-                    <table class="table table-borderless">
-                        <tr>
-                            <th>Front</th>
-                            <th>Back</th>
-                        </tr>
+
                         @foreach ($deck->cards as $card)
-                        <tr>
-                            <td width="50%">
-                                <div class="card" style="height: 160px;">
+                        <div class="d-flex">
+                            <div class="d-flex flex-column flex-md-row">
+                                <div class="card mr-3 mb-5" style="height: 160px; width: 260px;">
                                     <div class="card-body">
                                         {{ $card->primary_text }}<br>
                                         <b>{{ $card->secondary_text }}</b>
                                     </div>
                                 </div>
-                            </td>
-                            <td width="50%">
-                                <div class="card" style="height: 160px;">
+                                <div class="card mr-3" style="height: 160px; width: 260px;">
                                     <div class="card-body">
                                         {{ $card->answer }}
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
+                            </div>
+                            <div>
+                                <a href="{{ route('cardflash.cards.edit', $card->id) }}" class="d-block">Edit</a>
+                                <a href="{{ route('cardflash.cards.deleteCheck', $card->id) }}" class="d-block">Delete</a>
+                            </div>
+                        </div>
                         @endforeach
-                    </table>
+
                     @endif
+                    <a href="{{ route('cardflash.cards.create', $deck->id) }}" class="btn btn-primary">Create Card</a>
                 </div>
             </div>
         </div>
