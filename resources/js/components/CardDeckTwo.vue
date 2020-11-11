@@ -1,8 +1,10 @@
 <template>
     <div>
-        <p>{{ currentCard }}/{{cards.length}}</p>
+        <p>{{ currentCard }}/{{mutableCards.length}}</p>
         <div class="progress mb-4">
-            <div class="progress-bar" v-bind:style="progressBarStyle">
+            <div class="progress-bar bg-success" v-bind:style="correctProgressBarStyle">
+            </div>
+            <div class="progress-bar bg-danger" v-bind:style="incorrectProgressBarStyle">
             </div>
         </div>
         <v-touch v-on:swipeleft="onSwipeLeft" v-on:swiperight="onSwipeRight" class="swipe-container">
@@ -22,6 +24,7 @@
                         <button
                             @click="
                                 correctCount++
+                                tabulateAnswer(activeCard, true)
                                 nextCard()
                             "
                             class="btn btn-success flex-fill mr-3"
@@ -29,7 +32,9 @@
                             Correct
                         </button>
                         <button
-                            @click="nextCard()"
+                            @click="
+                                tabulateAnswer(activeCard, false)
+                                nextCard()"
                             class="btn btn-danger flex-fill"
                         >
                             Incorrect
@@ -57,13 +62,14 @@
 }
 
 .progress {
-    height: 10px;
-    border-radius: 10px;
+    /* height: 20px; */
+    /* border-radius: 10px; */
+    /* opacity: 0.5 */
 }
 
 .progress-bar {
-    background: rgb(67, 95, 253);
-    border-radius: 10px;
+    /* background: rgb(67, 95, 253); */
+    /* border-radius: 10px; */
 }
 </style>
 
@@ -77,23 +83,36 @@ export default {
             showAnswer: false,
             showResults: false,
             correctCount: 0,
+            scorecard: {
+                correct: [],
+                incorrect: []
+            }
         }
+    },
+    created: function() {
     },
     computed: {
         activeCard: function() {
             return this.mutableCards[this.activeIndex]
         },
         progress: function() {
-            return (this.activeIndex / this.cards.length) * 100
+            return (this.activeIndex / this.mutableCards.length) * 100
         },
-        progressBarStyle: function() {
+        correctProgressBarStyle: function() {
             return {
-                width: this.progress + "%"
+                width: ((this.scorecard.correct.length / this.mutableCards.length) * 100) + "%",
+                // borderRadius: this.scorecard.incorrect.length ? "10px 0 0 10px" : "10px"
+            }
+        },
+        incorrectProgressBarStyle: function() {
+            return {
+                width: ((this.scorecard.incorrect.length / this.mutableCards.length) * 100) + "%",
+                // borderRadius: this.scorecard.correct.length ? "0 10px 10px 0" : "10px"
             }
         },
         currentCard: function () {
             let current = this.activeIndex + 1
-            if (current > this.cards.length) {
+            if (current > this.mutableCards.length) {
                 return this.activeIndex
             } else {
                 return current
@@ -127,6 +146,22 @@ export default {
             }
                 
         },
+        tabulateAnswer(card, correct) {
+            this.removeFromArray(card.id, this.scorecard.correct)
+            this.removeFromArray(card.id, this.scorecard.incorrect)
+
+            if (correct) {
+                this.scorecard.correct.push(card.id)
+            } else {
+                this.scorecard.incorrect.push(card.id)
+            }
+        },
+        removeFromArray(value, array) {
+            const index = array.indexOf(value);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        },
         nextCard() {
             this.showAnswer = false
             this.activeIndex++
@@ -150,6 +185,8 @@ export default {
             this.showAnswer = false  
             this.activeIndex = 0
             this.correctCount = 0
+            this.scorecard.correct = []
+            this.scorecard.incorrect = []
             this.mutableCards = this.$root.shuffleArray(this.mutableCards)
         }
     }

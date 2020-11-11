@@ -1977,6 +1977,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['cards'],
   data: function data() {
@@ -1985,25 +1991,37 @@ __webpack_require__.r(__webpack_exports__);
       activeIndex: 0,
       showAnswer: false,
       showResults: false,
-      correctCount: 0
+      correctCount: 0,
+      scorecard: {
+        correct: [],
+        incorrect: []
+      }
     };
   },
+  created: function created() {},
   computed: {
     activeCard: function activeCard() {
       return this.mutableCards[this.activeIndex];
     },
     progress: function progress() {
-      return this.activeIndex / this.cards.length * 100;
+      return this.activeIndex / this.mutableCards.length * 100;
     },
-    progressBarStyle: function progressBarStyle() {
+    correctProgressBarStyle: function correctProgressBarStyle() {
       return {
-        width: this.progress + "%"
+        width: this.scorecard.correct.length / this.mutableCards.length * 100 + "%" // borderRadius: this.scorecard.incorrect.length ? "10px 0 0 10px" : "10px"
+
+      };
+    },
+    incorrectProgressBarStyle: function incorrectProgressBarStyle() {
+      return {
+        width: this.scorecard.incorrect.length / this.mutableCards.length * 100 + "%" // borderRadius: this.scorecard.correct.length ? "0 10px 10px 0" : "10px"
+
       };
     },
     currentCard: function currentCard() {
       var current = this.activeIndex + 1;
 
-      if (current > this.cards.length) {
+      if (current > this.mutableCards.length) {
         return this.activeIndex;
       } else {
         return current;
@@ -2036,6 +2054,23 @@ __webpack_require__.r(__webpack_exports__);
         this.showAnswer = true;
       }
     },
+    tabulateAnswer: function tabulateAnswer(card, correct) {
+      this.removeFromArray(card.id, this.scorecard.correct);
+      this.removeFromArray(card.id, this.scorecard.incorrect);
+
+      if (correct) {
+        this.scorecard.correct.push(card.id);
+      } else {
+        this.scorecard.incorrect.push(card.id);
+      }
+    },
+    removeFromArray: function removeFromArray(value, array) {
+      var index = array.indexOf(value);
+
+      if (index > -1) {
+        array.splice(index, 1);
+      }
+    },
     nextCard: function nextCard() {
       this.showAnswer = false;
       this.activeIndex++;
@@ -2061,6 +2096,8 @@ __webpack_require__.r(__webpack_exports__);
       this.showAnswer = false;
       this.activeIndex = 0;
       this.correctCount = 0;
+      this.scorecard.correct = [];
+      this.scorecard.incorrect = [];
       this.mutableCards = this.$root.shuffleArray(this.mutableCards);
     }
   }
@@ -6500,7 +6537,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.swipe-container {\n}\n.progress {\n    height: 10px;\n    border-radius: 10px;\n}\n.progress-bar {\n    background: rgb(67, 95, 253);\n    border-radius: 10px;\n}\n", ""]);
+exports.push([module.i, "\n.swipe-container {\n}\n.progress {\n    /* height: 20px; */\n    /* border-radius: 10px; */\n    /* opacity: 0.5 */\n}\n.progress-bar {\n    /* background: rgb(67, 95, 253); */\n    /* border-radius: 10px; */\n}\n", ""]);
 
 // exports
 
@@ -40999,11 +41036,19 @@ var render = function() {
     "div",
     [
       _c("p", [
-        _vm._v(_vm._s(_vm.currentCard) + "/" + _vm._s(_vm.cards.length))
+        _vm._v(_vm._s(_vm.currentCard) + "/" + _vm._s(_vm.mutableCards.length))
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "progress mb-4" }, [
-        _c("div", { staticClass: "progress-bar", style: _vm.progressBarStyle })
+        _c("div", {
+          staticClass: "progress-bar bg-success",
+          style: _vm.correctProgressBarStyle
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "progress-bar bg-danger",
+          style: _vm.incorrectProgressBarStyle
+        })
       ]),
       _vm._v(" "),
       _c(
@@ -41053,6 +41098,7 @@ var render = function() {
                             on: {
                               click: function($event) {
                                 _vm.correctCount++
+                                _vm.tabulateAnswer(_vm.activeCard, true)
                                 _vm.nextCard()
                               }
                             }
@@ -41070,7 +41116,8 @@ var render = function() {
                             staticClass: "btn btn-danger flex-fill",
                             on: {
                               click: function($event) {
-                                return _vm.nextCard()
+                                _vm.tabulateAnswer(_vm.activeCard, false)
+                                _vm.nextCard()
                               }
                             }
                           },
@@ -53774,8 +53821,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/lpd/src/packages/aalcala/cardflash/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/lpd/src/packages/aalcala/cardflash/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/lpt/src-dev/packages/aalcala/cardflash/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/lpt/src-dev/packages/aalcala/cardflash/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
