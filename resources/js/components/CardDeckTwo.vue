@@ -11,7 +11,7 @@
             <div v-if="showResults" class="card">
                 <div class="card-body d-flex flex-column">
                     <h5>Results</h5>
-                    <h1>{{ correctCount }} / {{ mutableCards.length }}</h1>
+                    <h1>{{ scorecard.correct.length }} / {{ mutableCards.length }}</h1>
                     <button @click="restart()" class="btn btn-success mt-auto">
                         Restart
                     </button>
@@ -23,7 +23,6 @@
                     <div class="mt-auto d-flex">
                         <button
                             @click="
-                                correctCount++
                                 tabulateAnswer(activeCard, true)
                                 nextCard()
                             "
@@ -82,7 +81,6 @@ export default {
             activeIndex: 0,
             showAnswer: false,
             showResults: false,
-            correctCount: 0,
             scorecard: {
                 correct: [],
                 incorrect: []
@@ -184,7 +182,6 @@ export default {
             this.showResults = false
             this.showAnswer = false  
             this.activeIndex = 0
-            this.correctCount = 0
             this.scorecard.correct = []
             this.scorecard.incorrect = []
             this.mutableCards = this.$root.shuffleArray(this.mutableCards)

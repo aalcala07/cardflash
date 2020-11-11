@@ -1982,7 +1982,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['cards'],
   data: function data() {
@@ -1991,7 +1990,6 @@ __webpack_require__.r(__webpack_exports__);
       activeIndex: 0,
       showAnswer: false,
       showResults: false,
-      correctCount: 0,
       scorecard: {
         correct: [],
         incorrect: []
@@ -2095,7 +2093,6 @@ __webpack_require__.r(__webpack_exports__);
       this.showResults = false;
       this.showAnswer = false;
       this.activeIndex = 0;
-      this.correctCount = 0;
       this.scorecard.correct = [];
       this.scorecard.incorrect = [];
       this.mutableCards = this.$root.shuffleArray(this.mutableCards);
@@ -41065,7 +41062,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("h1", [
                     _vm._v(
-                      _vm._s(_vm.correctCount) +
+                      _vm._s(_vm.scorecard.correct.length) +
                         " / " +
                         _vm._s(_vm.mutableCards.length)
                     )
@@ -41097,7 +41094,6 @@ var render = function() {
                             staticClass: "btn btn-success flex-fill mr-3",
                             on: {
                               click: function($event) {
-                                _vm.correctCount++
                                 _vm.tabulateAnswer(_vm.activeCard, true)
                                 _vm.nextCard()
                               }
