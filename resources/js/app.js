@@ -8,6 +8,9 @@ require('./bootstrap')
 
 window.Vue = require('vue')
 
+var VueTouch = require('vue-touch')
+Vue.use(VueTouch, {name: 'v-touch'})
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -20,6 +23,7 @@ window.Vue = require('vue')
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('card-deck-two', require('./components/CardDeckTwo.vue').default)
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
