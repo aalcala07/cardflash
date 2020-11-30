@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap')
+// import './registerServiceWorker'
 
 window.Vue = require('vue')
 

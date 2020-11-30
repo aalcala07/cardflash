@@ -19,6 +19,22 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Service Worker -->
+    <!-- <script src="{{ asset('vendor/cardflash/service-worker.js') }}" defer></script> -->
+
+    <script>
+        // Check that service workers are supported
+        if ('serviceWorker' in navigator) {
+            console.log('addEventListener')
+            // Use the window load event to keep the page load performant
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register("{{ asset('vendor/cardflash/service-worker.js') }}");
+            });
+        } else {
+            console.log('no serviceWorker in navigator')
+        }
+    </script>
 </head>
 
 <body>

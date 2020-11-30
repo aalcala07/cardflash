@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const {GenerateSW} = require('workbox-webpack-plugin');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,8 +12,31 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.setPublicPath('public')
+mix.setPublicPath('public/')
     .setResourceRoot('../')
     .js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
-    .version();
+    .version()
+    .webpackConfig(webpack => {
+        return {
+            plugins: [
+                new GenerateSW({
+                    swDest: './service-worker.js',
+                    directoryIndex: '/cardflash',
+                    // include: [
+                    //     '/cardflash'
+                    // ],
+                    modifyURLPrefix: {
+                        '/': ''
+                    },
+                    // navigateFallback: '/offline.html',
+                    // runtimeCaching: [
+                    //     {
+                    //         handler: 'StaleWhileRevalidate' ,
+                    //         urlPattern: '/offline.html'
+                    //     }
+                    // ]
+                })
+            ]
+        };
+    });
